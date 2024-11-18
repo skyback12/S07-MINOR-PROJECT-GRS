@@ -64,10 +64,6 @@ npm run dev
 - Support for additional types of presentations (e.g., videos).
 - Cross-platform support for various operating systems.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgements
 
 - TensorFlow for machine learning tools.
