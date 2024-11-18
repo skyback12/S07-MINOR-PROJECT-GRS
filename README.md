@@ -37,7 +37,7 @@ git clone https://github.com/skyback12/S07-MINOR-PROJECT-GRS.git
 ### Run the Backend
 1. Navigate to the backend directory:
    ```bash
-   cd D:/Project/backend
+   cd backend
    ```
 
 2. Run the Flask server:
