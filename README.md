@@ -1,5 +1,3 @@
-Here’s a template for the README file for your **Gesture Control System** project. You can adjust it according to your project's details:
-
 ---
 
 # Gesture Control System
