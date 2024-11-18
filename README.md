@@ -71,5 +71,3 @@ npm run dev
 - The Python community for helpful libraries and resources.
 
 ---
-
-Feel free to edit the content based on your specific features and setup! Let me know if you need more help.
