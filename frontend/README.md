@@ -1,5 +1,3 @@
-Here's an updated **README** file template specifically for the frontend of your Gesture Control System project using **Vite** (a modern build tool):
-
 ---
 
 # Gesture Control System - Frontend
