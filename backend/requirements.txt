@@ -1,3 +1,5 @@
 Flask
 cvzone
 mediapipe
+python-pptx
+flask-cors
