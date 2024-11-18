@@ -38,6 +38,16 @@ thread_lock = Lock()
 @app.route('/')
 def home():
     return "Hello, Flask!"
+
+# Serve frontend index.html
+@app.route('/frontend')
+def serve_index():
+    return send_file('D:/Project/frontend/index.html')
+
+# Serve other frontend assets (JavaScript, CSS, images)
+@app.route('/frontend/<path:path>')
+def serve_frontend(path):
+    return send_from_directory('D:/Project/frontend', path)
     
 
 # Define the upload folder and allowed file extensions
