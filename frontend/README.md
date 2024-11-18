@@ -31,7 +31,7 @@ The frontend of the Gesture Control System is the user interface that interacts 
 
 ### Clone the repository
 ```bash
-git clone https://github.com/skyback12/gesture-control-system.git
+git clone https://github.com/skyback12/S07-MINOR-PROJECT-GRS.git
 ```
 
 ### Install dependencies
