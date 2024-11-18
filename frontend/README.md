@@ -93,9 +93,6 @@ export default defineConfig({
 - Optimize performance for handling large presentations.
 - Implement cross-browser compatibility.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
@@ -106,4 +103,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-This README assumes you're using React.js with Vite, but you can switch to Vue.js or another framework easily by adjusting the respective sections. Let me know if you need more customizations!
