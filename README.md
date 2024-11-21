@@ -1,73 +1,114 @@
----
+```markdown
+# Gesture Recognition System (GRS)
 
-# Gesture Control System
+## Overview
 
-A gesture-controlled system that allows users to interact with digital content such as slides and presentations using hand gestures. The system leverages machine learning and depth-sensing technologies to recognize custom gestures, providing an intuitive and accessible interface for users.
+The Gesture Recognition System (GRS) is an innovative solution that enables users to control presentations and other media through gestures and speech commands. The system integrates machine learning for gesture recognition and speech-to-text capabilities for seamless interaction. It aims to enhance accessibility and provide an intuitive, touchless user experience in various environments, including business presentations, interactive kiosks, and accessibility-focused applications.
 
 ## Features
 
-- **Gesture Recognition**: High-accuracy gesture recognition powered by machine learning.
-- **Slide Control**: Navigate and control slide presentations with hand gestures.
-- **Custom Gestures**: Ability to define and use custom gestures for unique actions.
-- **Pause and Resume**: Pause the presentation without closing the feed.
+- **Gesture Recognition**: Recognize custom hand gestures to navigate slides, pause, or perform other controls.
+- **Speech Recognition**: Convert spoken commands into actions (e.g., "Next Slide", "Pause").
+- **Real-Time Performance**: Low-latency processing for both gestures and speech commands.
+- **Customizable**: Easily modify gestures and commands based on specific needs.
+- **Cross-Platform**: Works on most modern web browsers using just a camera and microphone.
 
 ## Technologies Used
 
-- **Backend**: Python, Flask
-- **Machine Learning**: TensorFlow, OpenCV (for gesture recognition)
-- **Speech Recognition**: Python SpeechRecognition library
-- **Depth Sensing**: Depth-sensing technology (e.g., Kinect, RealSense)
-- **Frontend**: HTML, CSS, JavaScript (React/Vue for interactive UI)
+- **Frontend**: React (with Vite for fast builds and hot-reloading)
+- **Backend**: Flask (Python)
+- **Gesture Recognition**: TensorFlow.js / MediaPipe (for hand gesture tracking)
+- **Speech Recognition**: Web Speech API or external libraries
+- **Machine Learning**: TensorFlow, Keras, or other relevant frameworks
 
-## Installation
+## Getting Started
 
 ### Prerequisites
 
-1. Python 3.x
-2. Install the required libraries:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Before running the project, ensure you have the following installed:
 
-### Clone the repository
+- **Node.js** (>= 18.x)
+- **Python** (>= 3.x)
+- **pip** (for installing Python packages)
+
+### 1. Clone the Repository
+
+Clone the repository to your local machine:
+
 ```bash
 git clone https://github.com/skyback12/S07-MINOR-PROJECT-GRS.git
+cd S07-MINOR-PROJECT-GRS
 ```
 
-### Run the Backend
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
+### 2. Install Frontend Dependencies
 
-2. Run the Flask server:
-   ```bash
-   python app.py or flask run
-   ```
+Navigate to the `frontend` directory and install the required dependencies:
 
-### Run the Frontend
-If your frontend is using a framework like React or Vue, you can run it by:
 ```bash
+cd frontend
 npm install
+```
+
+### 3. Set Up the Backend
+
+Navigate to the `backend` directory, create a Python virtual environment (optional but recommended), and install the required packages:
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # For Linux/macOS
+venv\Scripts\activate     # For Windows
+pip install -r requirements.txt
+```
+
+### 4. Run the Application
+
+#### Frontend
+
+Start the React development server:
+
+```bash
+cd frontend
 npm run dev
 ```
 
+#### Backend
+
+Start the Flask backend server:
+
+```bash
+cd backend
+python app.py
+```
+
+### 5. Open the Application
+
+After both servers are running, navigate to `http://localhost:3000` in your browser to use the Gesture Recognition System.
+
 ## Usage
 
-1. Open the backend and frontend in your preferred development environment.
-2. Access the system via the browser (usually `http://localhost:5000` for Flask).
-3. Use gestures and voice commands to interact with the system.
+- **Gesture Controls**: Use predefined or custom hand gestures to interact with the system. For example:
+  - Swipe left/right to change slides.
+  - Make a fist to pause or play the presentation.
+- **Speech Commands**: Speak commands to control the system. Some examples include:
+  - "Next slide"
+  - "Pause"
+  - "Start presentation"
 
-## Future Enhancements
+## Contributing
 
-- Improved accuracy for gesture recognition.
-- Support for additional types of presentations (e.g., videos).
-- Cross-platform support for various operating systems.
+Contributions are welcome! If you'd like to contribute, follow the steps below:
 
-## Acknowledgements
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature-name`)
+3. Make your changes
+4. Commit your changes (`git commit -am 'Add feature'`)
+5. Push the branch (`git push origin feature-name`)
+6. Open a pull request with a description of your changes
 
-- TensorFlow for machine learning tools.
-- OpenCV for computer vision.
-- The Python community for helpful libraries and resources.
 
----
+## Acknowledgments
+
+- Thanks to the contributors of the gesture recognition libraries (e.g., MediaPipe, TensorFlow.js) used in this project.
+- Special thanks to the developers of Flask and React for providing excellent frameworks to build the system.
+```
