@@ -67,6 +67,10 @@ while True:
     
     hands,img=detector.findHands(img)
     cv2.line(img,(0,gesturethreshold),(width,gesturethreshold),(0,255,0),10)
+    
+    # Ensure the screenshot folder exists
+    screenshot_folder = "screenshot"
+    os.makedirs(screenshot_folder, exist_ok=True)
 
     if hands and buttonPressed is False:
         hand=hands[0]
@@ -180,11 +184,11 @@ while True:
             imgcurrent = cv2.resize(imgcurrent, None, fx=zoom_factor, fy=zoom_factor)
             print(f"Zoom: {zoom_factor}")
 
-
-        #screenshot
+        # Screenshot
         if fingers == [0, 0, 0, 0, 0]:  # Fist gesture to capture screenshot
-            cv2.imwrite(f"screenshot_{imgnumber + 1}.png", imgcurrent)
-            print(f"Screenshot of slide {imgnumber + 1} saved.")
+            screenshot_path = os.path.join(screenshot_folder, f"screenshot_{imgnumber + 1}.png")
+            cv2.imwrite(screenshot_path, imgcurrent)
+            print(f"Screenshot of slide {imgnumber + 1} saved in {screenshot_folder}.")
 
 
 

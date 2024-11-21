@@ -158,6 +158,3 @@ def video_feed():
 @app.route('/slide_feed')
 def slide_feed():
     return Response(generate_slide_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-if __name__ == '__main__':
-    app.run(debug=True)
