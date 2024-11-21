@@ -1,8 +1,7 @@
 ---
-
 # Gesture Control System - Frontend
 
-The frontend of the Gesture Control System is the user interface that interacts with the backend and allows users to control presentations using gestures and voice commands. This project is built with **Vite** for a fast, optimized development experience.
+The frontend of the Gesture Control System is the user interface that interacts with the backend and allows users to control presentations using gestures and voice commands. This project is built with[...]
 
 ## Features
 
