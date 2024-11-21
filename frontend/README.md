@@ -99,6 +99,5 @@ export default defineConfig({
 - React.js for the frontend framework.
 - Material UI for design components.
 - The Python backend for machine learning and gesture recognition.
-
 ---
 
