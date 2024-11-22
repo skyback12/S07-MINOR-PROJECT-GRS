@@ -1,10 +1,11 @@
-from flask import Flask, jsonify, Response, send_from_directory , request , send_file , redirect , url_for
+from flask import Flask, jsonify, Response, send_from_directory, send_file, redirect, url_for, request
 import subprocess
 import os
 from threading import Lock
 import zmq
 from dotenv import load_dotenv
 from flask_cors import CORS
+import requests
 
 # Load environment variables from .env
 load_dotenv()
@@ -23,9 +24,12 @@ app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
 # ZMQ context and sockets
 context = zmq.Context()
+
+# Video and slide feed sockets
 video_socket = context.socket(zmq.SUB)
 video_socket.connect("tcp://localhost:5555")
 video_socket.setsockopt_string(zmq.SUBSCRIBE, "")
+
 slide_socket = context.socket(zmq.SUB)
 slide_socket.connect("tcp://localhost:5556")
 slide_socket.setsockopt_string(zmq.SUBSCRIBE, "")
@@ -38,17 +42,6 @@ thread_lock = Lock()
 @app.route('/')
 def home():
     return "Hello, Flask!"
-
-# Serve frontend index.html
-@app.route('/frontend')
-def serve_index():
-    return send_file('D:/Project/frontend/index.html')
-
-# Serve other frontend assets (JavaScript, CSS, images)
-@app.route('/frontend/<path:path>')
-def serve_frontend(path):
-    return send_from_directory('D:/Project/frontend', path)
-    
 
 # Define the upload folder and allowed file extensions
 UPLOAD_FOLDER = 'D:/Project/backend/PPT'
@@ -72,31 +65,30 @@ def upload_file():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(file_path)
 
-        # Now execute test.py script
+        # Now, make a request to start the presentation by triggering api/start1
         try:
-            # Run the test.py script
-            result = subprocess.run(['python', 'test.py'], capture_output=True, text=True)
-            # If needed, process the result here
-            print(result.stdout)  # You can log or process the output of test.py
-
-            return jsonify({'status': 'File uploaded and test.py executed!'}), 200
-        except Exception as e:
-            print(e)
-            return jsonify({'status': 'File upload successful, but error running test.py'}), 500
+            response = requests.get("http://localhost:5000/api/start1")  # Trigger start1 API
+            if response.status_code == 200:
+                return jsonify({'status': 'File uploaded successfully, presentation started!'}), 200
+            else:
+                return jsonify({'status': 'Error starting the presentation'}), 500
+        except requests.exceptions.RequestException as e:
+            print(f"Error triggering start1 API: {e}")
+            return jsonify({'status': 'File uploaded successfully, but error starting presentation'}), 500
 
     return jsonify({'status': 'Invalid file type'}), 400
-        
+
+
 
 @app.route('/api/start1', methods=['GET'])
 def start_presentation1():
     global process1
     with thread_lock:
         if process1 is None or process1.poll() is not None:
-            process1 = subprocess.Popen(['python', 'test.py'])
+            process1 = subprocess.Popen(['python', 'test_slider.py'])
             return jsonify({"status": "Presentation 1 started"}), 200
         else:
             return jsonify({"status": "Presentation 1 already running"}), 200
-
 
 @app.route('/api/start2', methods=['GET'])
 def start_presentation2():
@@ -139,6 +131,7 @@ def get_slides():
 def get_slide(filename):
     return send_from_directory(presentation_folder, filename)
 
+# Video and slide frame generators
 def generate_video_frames():
     while True:
         frame = video_socket.recv()
@@ -157,4 +150,8 @@ def video_feed():
 
 @app.route('/slide_feed')
 def slide_feed():
+    return Response(generate_slide_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/slide_feed1')
+def slide_feed1():
     return Response(generate_slide_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')

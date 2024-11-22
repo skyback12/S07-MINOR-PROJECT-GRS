@@ -4,7 +4,7 @@ import numpy as np
 from pptx import Presentation
 from PIL import Image, ImageDraw
 from HandTracker import HandDetector
-import time  # Import time module for delay functionality
+import time
 
 # Configuration
 width, height = 1280, 720
@@ -13,9 +13,10 @@ gesturethreshold = 500
 buttondelay = 20  # Increased button delay to slow transitions
 imgnumber = 0
 buttonPressed, buttoncounter = False, 0
-annotations = [[]]
+annotations = {}
 annotationnumber, annotationstart = 0, False
 image_path = "images"
+zoom_factor = 1  # Default zoom factor
 
 # Initialize Hand Detector
 detector = HandDetector(detectionCon=0.8, maxHands=1)
@@ -68,8 +69,6 @@ def calculate_distance(lmList, point1, point2):
     x1, y1, z1 = lmList[point1]
     x2, y2, z2 = lmList[point2]
     return np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)  # 2D distance
-    # To use 3D distance, uncomment the line below
-    # return np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)  # 3D distance
 
 # Define thresholds for zoom gestures
 min_distance = 30  # Adjust this threshold based on testing
@@ -89,6 +88,9 @@ while True:
         print("Error loading slide image.")
         break
 
+    # Apply zoom factor to the image
+    imgcurrent = cv2.resize(imgcurrent, None, fx=zoom_factor, fy=zoom_factor)
+
     # Add a camera thumbnail
     hs, ws = int(120 * 1), int(213 * 1)
     imgSmall = cv2.resize(img, (ws, hs))
@@ -107,12 +109,11 @@ while True:
         indexFinger = xVal, yVal
 
         if cy <= gesturethreshold:
-
             # Previous Slide
             if fingers == [1, 0, 0, 0, 0] and imgnumber > 0:
                 print("Left (Previous Slide)")
                 buttonPressed = True
-                annotations = [[]]
+                annotations[imgnumber] = []
                 annotationnumber = 0
                 annotationstart = False
                 imgnumber -= 1
@@ -122,7 +123,7 @@ while True:
             elif fingers == [0, 0, 0, 0, 1] and imgnumber < len(pathimages) - 1:
                 print("Right (Next Slide)")
                 buttonPressed = True
-                annotations = [[]]
+                annotations[imgnumber] = []
                 annotationnumber = 0
                 annotationstart = False
                 imgnumber += 1
@@ -137,23 +138,22 @@ while True:
             if not annotationstart:
                 annotationstart = True
                 annotationnumber += 1
-                annotations.append([])
+                annotations[imgnumber] = []
             cv2.circle(imgcurrent, indexFinger, 12, (0, 255, 0), cv2.FILLED)
-            annotations[annotationnumber].append(indexFinger)
+            annotations[imgnumber].append(indexFinger)
         else:
             annotationstart = False
 
         # Clear Screen
         if fingers == [1, 1, 1, 1, 1] and annotations:
-            annotations.clear()
+            annotations[imgnumber] = []
             annotationnumber = 0
-            annotations = [[]]
             print("Screen Cleared")
 
         # Undo Last Annotation
         if fingers == [0, 1, 1, 1, 0] and annotationnumber >= 0:
-            if annotations:
-                annotations.pop(-1)
+            if annotations[imgnumber]:
+                annotations[imgnumber].pop(-1)
                 annotationnumber -= 1
                 buttonPressed = True
                 print("Undo Last Annotation")
@@ -172,9 +172,9 @@ while True:
             print(f"Screenshot of slide {imgnumber + 1} saved.")
 
     # Draw annotations on the slide
-    for i in range(len(annotations)):
-        for j in range(1, len(annotations[i])):
-            cv2.line(imgcurrent, annotations[i][j - 1], annotations[i][j], (0, 0, 200), 12)
+    for annotation in annotations.get(imgnumber, []):
+        for i in range(1, len(annotation)):
+            cv2.line(imgcurrent, annotation[i - 1], annotation[i], (0, 0, 200), 12)
 
     # Display slide number
     cv2.putText(imgcurrent, f"Slide {imgnumber + 1}/{len(pathimages)}", (w - 150, h - 20),
